@@ -10,6 +10,13 @@
 </template>
 
 <script setup>
-    import axios from 'axios'
-    import 
+    import {ref, onMounted} from 'vue'
+    import { useBookingStore } from '@/stores/booking';
+
+    const store = useBookingStore()
+    const availableSlots = ref([])
+
+    onMounted(async () => {
+        availableSlots.value = await store.getAvailableSlots()
+    })
 </script>
