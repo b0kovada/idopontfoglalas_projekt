@@ -1,0 +1,7 @@
+{
+    "bookings": [
+      { "time": "8:00", "name": "Kiss Péter", "phone": "123456789" },
+      { "time": "10:00", "name": "Nagy Anna", "phone": "987654321" },
+      { "time": "13:00", "name": "Szabó László", "phone": "567890123" }
+    ]
+  }
