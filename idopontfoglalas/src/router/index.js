@@ -11,7 +11,7 @@ const router = createRouter({
       component: BookingListView
     },
     {
-      path: '/foglalas/time',
+      path: '/foglalas/:id',
       name: 'Foglalás',
       component: BookingFormView
     },
