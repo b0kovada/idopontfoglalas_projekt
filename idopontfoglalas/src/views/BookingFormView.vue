@@ -1,6 +1,5 @@
 <template>
   <div class="container mt-4">
-    <h2 class="text-center mb-4">Foglalás</h2>
     <div class="card p-4 shadow-lg">
       <div v-if="slot">
         <h3 class="text-center">Időpont: {{ slot.date }} - {{ slot.time }}</h3>
@@ -28,6 +27,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { useToast } from 'vue-toastification';
+import { Guid } from 'js-guid';
 
 const route = useRoute();
 const router = useRouter();
@@ -56,8 +56,8 @@ onMounted(fetchSlot);
 
 const submitBooking = async () => {
   if (!slot.value) return;
-  await axios.post('http://localhost:3000/bookings', { id: Date.now(), date: slot.value.date, time: slot.value.time, name: name.value, phone: phone.value });
-  toast.success(`Foglalás sikeres ${slot.value.date, slot.value.time} időpontra`);
+  await axios.post('http://localhost:3000/bookings', { id: Guid.newGuid().toString(), date: slot.value.date, time: slot.value.time, name: name.value, phone: phone.value });
+  toast.success(`Foglalás sikeres: ${slot.value.date} - ${slot.value.time} időpontra`);
   router.push('/');
 };
 </script>
