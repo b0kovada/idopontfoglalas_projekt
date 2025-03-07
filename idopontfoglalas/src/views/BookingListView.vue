@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <h2>Elérhető időpontok</h2>
-    <table class="table table-striped">
-      <thead>
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">Elérhető időpontok</h2>
+    <table class="table table-bordered table-hover text-center">
+      <thead class="table-dark">
         <tr>
           <th>Nap</th>
           <th>Időpont</th>
@@ -14,9 +14,7 @@
           <td>{{ slot.date }}</td>
           <td>{{ slot.time }}</td>
           <td>
-            <router-link :to="`/foglalas/${slot.id}`" class="btn btn-primary">
-              Foglalás
-            </router-link>
+            <router-link :to="`/foglalas/${slot.id}`" class="btn btn-primary">Foglalás</router-link>
           </td>
         </tr>
       </tbody>
@@ -26,13 +24,24 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useBookingStore } from '@/stores/booking';
+import axios from 'axios';
 
-const store = useBookingStore();
 const availableSlots = ref([]);
 
-onMounted(async () => {
-  await store.fetchBookings();
-  availableSlots.value = await store.getAvailableSlots();
-});
+const fetchBookings = async () => {
+  const { data } = await axios.get('http://localhost:3000/bookings');
+  const bookedSlots = data.map(b => `${b.date}-${b.time}`);
+
+  const days = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek'];
+  const allSlots = days.flatMap((day, index) => 
+    Array.from({ length: 9 }, (_, i) => ({
+      id: index * 10 + i + 1,
+      date: day,
+      time: `${8 + i}:00`
+    }))
+  );
+  availableSlots.value = allSlots.filter(slot => !bookedSlots.includes(`${slot.date}-${slot.time}`));
+};
+
+onMounted(fetchBookings);
 </script>

@@ -1,53 +1,63 @@
 <template>
-    <div>
-      <h2>Foglalás</h2>
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">Foglalás</h2>
+    <div class="card p-4 shadow-lg">
       <div v-if="slot">
-        <h3>Időpont: {{ slot.date }} - {{ slot.time }}</h3>
+        <h3 class="text-center">Időpont: {{ slot.date }} - {{ slot.time }}</h3>
         <form @submit.prevent="submitBooking">
           <div class="mb-3">
-            <label>Név:</label>
+            <label class="form-label">Név:</label>
             <input v-model="name" class="form-control" required />
           </div>
           <div class="mb-3">
-            <label>Telefonszám:</label>
+            <label class="form-label">Telefonszám:</label>
             <input v-model="phone" class="form-control" required />
           </div>
-          <button type="submit" class="btn btn-success">Foglalás</button>
+          <button type="submit" class="btn btn-success w-100">Foglalás</button>
         </form>
       </div>
       <div v-else>
-        <p>Időpont nem található!</p>
+        <p class="text-danger text-center">Időpont nem található!</p>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted, watch } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  import { useBookingStore } from '@/stores/booking';
-  import { useToast } from 'vue-toastification';
-  
-  const route = useRoute();
-  const router = useRouter();
-  const store = useBookingStore();
-  const toast = useToast();
-  
-  const slot = ref(null);
-  const name = ref('');
-  const phone = ref('');
-  
-  const loadSlot = async () => {
-    await store.fetchBookings();
-    slot.value = store.getAvailableSlots().find(b => b.id == route.params.id);
-  };
-  
-  onMounted(loadSlot);
-  watch(() => route.params.id, loadSlot);
-  
-  const submitBooking = async () => {
-    if (!slot.value) return;
-    await store.bookSlot(slot.value.date, slot.value.time, name.value, phone.value);
-    toast.success('Foglalás sikeres!');
-    router.push('/');
-  };
-  </script>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
+import { useToast } from 'vue-toastification';
+
+const route = useRoute();
+const router = useRouter();
+const toast = useToast();
+
+const slot = ref(null);
+const name = ref('');
+const phone = ref('');
+
+const fetchSlot = async () => {
+  const { data } = await axios.get('http://localhost:3000/bookings');
+  const bookedSlots = data.map(b => `${b.date}-${b.time}`);
+
+  const days = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek'];
+  const allSlots = days.flatMap((day, index) => 
+    Array.from({ length: 9 }, (_, i) => ({
+      id: index * 10 + i + 1,
+      date: day,
+      time: `${8 + i}:00`
+    }))
+  );
+  slot.value = allSlots.find(s => s.id == route.params.id && !bookedSlots.includes(`${s.date}-${s.time}`));
+};
+
+onMounted(fetchSlot);
+
+const submitBooking = async () => {
+  if (!slot.value) return;
+  await axios.post('http://localhost:3000/bookings', { id: Date.now(), date: slot.value.date, time: slot.value.time, name: name.value, phone: phone.value });
+  toast.success('Foglalás sikeres!');
+  router.push('/');
+};
+</script>
