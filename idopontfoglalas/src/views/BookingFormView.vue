@@ -57,7 +57,7 @@ onMounted(fetchSlot);
 const submitBooking = async () => {
   if (!slot.value) return;
   await axios.post('http://localhost:3000/bookings', { id: Date.now(), date: slot.value.date, time: slot.value.time, name: name.value, phone: phone.value });
-  toast.success('Foglalás sikeres!');
+  toast.success(`Foglalás sikeres ${slot.value.date, slot.value.time} időpontra`);
   router.push('/');
 };
 </script>
