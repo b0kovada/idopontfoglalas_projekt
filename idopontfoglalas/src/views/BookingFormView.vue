@@ -2,7 +2,7 @@
     <div>
       <h2>Foglalás</h2>
       <div v-if="slot">
-        <h3>Időpont: {{ slot.time }}</h3>
+        <h3>Időpont: {{ slot.date }} - {{ slot.time }}</h3>
         <form @submit.prevent="submitBooking">
           <div class="mb-3">
             <label>Név:</label>
@@ -46,7 +46,7 @@
   
   const submitBooking = async () => {
     if (!slot.value) return;
-    await store.bookSlot(slot.value.time, name.value, phone.value);
+    await store.bookSlot(slot.value.date, slot.value.time, name.value, phone.value);
     toast.success('Foglalás sikeres!');
     router.push('/');
   };

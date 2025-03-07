@@ -3,7 +3,9 @@
       <h2>Elérhető időpontok</h2>
       <ul class="list-group">
         <li v-for="slot in availableSlots" :key="slot.id" class="list-group-item">
-          <router-link :to="`/foglalas/${slot.id}`" class="btn btn-primary">{{ slot.time }}</router-link>
+          <router-link :to="`/foglalas/${slot.id}`" class="btn btn-primary">
+            {{ slot.date }} - {{ slot.time }}
+          </router-link>
         </li>
       </ul>
     </div>
