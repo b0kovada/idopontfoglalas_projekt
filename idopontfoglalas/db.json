@@ -1,32 +1,39 @@
 {
   "bookings": [
     {
-      "id": "1",
-      "date": "Hétfő",
+      "id": "4233ee35-0cb1-4f06-bf33-4005a33790ad",
+      "date": "Szerda",
       "time": "8:00",
-      "name": "Kiss Péter",
+      "name": "Kis Kelemen",
       "phone": "123456789"
     },
     {
-      "id": "2",
+      "id": "d7e13c3d-6a0a-4bda-bd2d-c403b4ad8915",
       "date": "Kedd",
-      "time": "10:00",
-      "name": "Nagy Anna",
-      "phone": "987654321"
+      "time": "16:00",
+      "name": "Nagy Nándor",
+      "phone": "123456789"
     },
     {
-      "id": "3",
+      "id": "c7d1ec37-0ff9-4f6d-b910-4aa918674653",
+      "date": "Hétfő",
+      "time": "14:00",
+      "name": "Igen Igeodo",
+      "phone": "123456789"
+    },
+    {
+      "id": "c39ad2d4-86f9-45d1-acb9-00a8c7cd41cc",
+      "date": "Péntek",
       "time": "13:00",
-      "date": "Szerda",
-      "name": "Szabó László",
-      "phone": "567890123"
+      "name": "Németh Noár",
+      "phone": "123456789"
     },
     {
-      "id": "4",
+      "id": "5580cded-0d10-487c-b063-69aff8e96ca4",
       "date": "Csütörtök",
-      "time": "8:00",
-      "name": "Kovacshazi Adam",
-      "phone": "+36501254"
+      "time": "11:00",
+      "name": "Zsolt Zsolt",
+      "phone": "123456789"
     }
   ]
 }
